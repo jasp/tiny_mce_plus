@@ -12,7 +12,8 @@ module TinyMCEHelper
                        :theme => 'simple'}
     options = default_options.merge(options)
     TinyMCE::OptionValidator.plugins = options[:plugins]
-    tinymce_js = "tinyMCE.init({\n"
+    tinymce_js = "$('textarea.tinymce').tinymce({\n"
+    tinymce_js += "script_url: '/javascripts/tiny_mce/tiny_mce.js',\n"
     i = 0    
     options.stringify_keys.sort.each do |pair|
       key, value = pair[0], pair[1]
@@ -36,13 +37,8 @@ module TinyMCEHelper
     tinymce_js += "\n});"
     javascript_tag tinymce_js
   end
+  
+  end
   alias tiny_mce tiny_mce_init
-  
-  def javascript_include_tiny_mce
-    javascript_include_tag RAILS_ENV == 'development' ? "tiny_mce/tiny_mce_src" : "tiny_mce/tiny_mce"
-  end
-  
-  def javascript_include_tiny_mce_if_used
-    javascript_include_tiny_mce if @uses_tiny_mce
-  end
+
 end
