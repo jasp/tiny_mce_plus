@@ -15,12 +15,12 @@ function select_thumb(element) {
   element = $(element);
   var size = element.attr('href').split('#')[1];
   var img = element.closest('li').removeClass("selected").find('img');
-  var src = img.attr("src").gsub('_thumb.', size+'.');
+  var src = img.attr("src").replace(/_thumb\./, size+'.');
   curbly_insert_image(src, img.attr('alt'));
 }
 
 function upload_image_callback(url, alt_text, photo_id){
-  $('#image_uploaded_data').clear();
+  $('#image_uploaded_data').empty();
   $.getScript("/tiny_mce_photos/?page=1");
 }
 
