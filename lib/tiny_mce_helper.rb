@@ -38,7 +38,6 @@ module TinyMCEHelper
     javascript_tag tinymce_js
   end
   
-  end
   alias tiny_mce tiny_mce_init
 
   def javascript_include_tiny_mce
