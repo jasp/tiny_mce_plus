@@ -6,9 +6,7 @@ class TinyMcePhotosController < ApplicationController
 
   def index
     @photos = TinyMcePhoto.paginate :page => params[:page], :order => "created_at DESC", :conditions => ['user_id = ?', current_user.id], :per_page => 10
-    render :update do |page|
-      page.replace_html :dynamic_images_list, :partial => 'photo_list', :locals => { :photos => @photos }
-    end
+    render :js => "$('#dynamic_images_list').html(\"#{escape_javascript(render(:partial => "photo_list", :locals => { :photos => @photos }))}\");"
   end
 
   def create
@@ -18,17 +16,13 @@ class TinyMcePhotosController < ApplicationController
     @photo.user = @user
 
     if @photo.save
-      GC.start        
+      GC.start
       responds_to_parent do
-        render :update do |page|
-          page << "upload_image_callback('#{@photo.public_filename()}', '#{@photo.display_name}', '#{@photo.id}');"
-        end
+        render :js => "upload_image_callback('#{@photo.public_filename()}', '#{@photo.display_name}', '#{@photo.id}');"
       end                
     else
       responds_to_parent do
-        render :update do |page|
-          page.alert('Sorry, there was an error uploading the photo.')
-        end
+        render :js => "alert('Sorry, there was an error uploading the photo.')"
       end
     end
   end
