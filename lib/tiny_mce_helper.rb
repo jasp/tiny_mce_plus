@@ -12,7 +12,7 @@ module TinyMCEHelper
                        :theme => 'simple'}
     options = default_options.merge(options)
     TinyMCE::OptionValidator.plugins = options[:plugins]
-    tinymce_js = "$('textarea.tinymce').tinymce({\n"
+    tinymce_js = "$(function(){$('textarea.tinymce').tinymce({\n"
     tinymce_js += "script_url: '/javascripts/tiny_mce/tiny_mce.js',\n"
     i = 0    
     options.stringify_keys.sort.each do |pair|
@@ -34,7 +34,7 @@ module TinyMCEHelper
       (i < options.size - 1) ? tinymce_js += ",\n" : "\n"
       i += 1
     end
-    tinymce_js += "\n});"
+    tinymce_js += "\n});});"
     javascript_tag tinymce_js
   end
   
